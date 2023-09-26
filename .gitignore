@@ -1,0 +1,36 @@
+# Node modules
+node_modules/
+
+# Environment variables
+.env
+
+# Build and compilation output
+dist/
+build/
+out/
+lib/
+
+# User-specific files
+.vscode/
+.idea/
+.DS_Store
+
+# Log and temporary files
+*.log
+*.tmp
+
+# Database files
+data/
+
+# Generated documentation
+docs/
+
+# Package lock files
+package-lock.json
+yarn.lock
+
+# Test data and fixtures
+test/data/
+
+# Coverage reports
+coverage/
