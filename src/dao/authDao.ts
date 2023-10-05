@@ -1,4 +1,4 @@
-import User from '../models/User';
+import User from '../types/User';
 import fs from 'fs';
 import path from 'path';
 import bcrypt from 'bcrypt';

@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken'
-import User from '../models/User';
+import User from '../types/User';
 import { addUser, validateExistingUsername, authenticateUser } from '../dao/authDao';
 import { v4 as uuidv4 } from 'uuid';
 import dotenv from 'dotenv';
@@ -25,6 +25,7 @@ export const register = async (req: Request, res: Response) => {
       username,
       email,
       password: hashedPassword,
+      likedMovies:[]
     };
 
     addUser(newUser);

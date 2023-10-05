@@ -3,6 +3,9 @@ interface User {
   username: string;
   email: string;
   password: string;
+  likedMovies: string[];
 }
 
 export default User;
+
+
