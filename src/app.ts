@@ -4,22 +4,6 @@ import authRoutes from './routes/authRoutes';
 import { typeDefs } from './graphql/schema';
 import resolvers from './graphql/resolvers';
 
-/* const app = express();
-app.use(express.json());
-app.use(authRoutes);
-
-const server = new ApolloServer({
-  typeDefs,
-  resolvers,
-})
-
-server.applyMiddleware({ app, path: '/graphql' });
-
-app.listen(3001, () => {
-  console.log('Express server running on port 3001 ...');
-})
-console.log('GraphQL server running at http://localhost:3000/graphql ...') */
-
 async function startApolloServer() {
   const server = new ApolloServer({
     typeDefs,
