@@ -1,4 +1,4 @@
-import {gql} from 'apollo-server';
+import { gql } from 'apollo-server';
 
 export const typeDefs = gql`
 type Movie {
@@ -14,6 +14,6 @@ type User {
 }
 
 type Query{
-  getUserLikedMovies(userId:ID!):[Movie!]!
+  getUserLikedMovies:[Movie!]!
 }
 `;

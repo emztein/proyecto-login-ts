@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken'
+import { skip } from 'graphql-resolvers';
 import User from '../types/User';
 import { addUser, validateExistingUsername, authenticateUser } from '../dao/authDao';
 import { v4 as uuidv4 } from 'uuid';
@@ -25,7 +26,7 @@ export const register = async (req: Request, res: Response) => {
       username,
       email,
       password: hashedPassword,
-      likedMovies:[]
+      likedMovies: []
     };
 
     addUser(newUser);
@@ -50,11 +51,11 @@ export const login = async (req: Request, res: Response) => {
     }
 
 
-    const isAuthenticated = await authenticateUser(username, password);
+    const userId = await authenticateUser(username, password);
 
-    if (isAuthenticated) {
+    if (userId) {
 
-      const token = jwt.sign({ userId: username }, process.env.JWT_SECRET as string);
+      const token = jwt.sign({ userId }, process.env.JWT_SECRET as string);
 
       // Send the token in the response
       res.status(200).json({ token });
@@ -65,5 +66,18 @@ export const login = async (req: Request, res: Response) => {
 
   } catch (error) {
     res.status(500).json({ error: 'Error en el servidor' });
+  }
+}
+
+export const isAuthenticated = (_: any, __: any, context: any) => {
+  try {
+    if (context.userId) {
+      return skip;
+    } else {
+      throw new Error('Unauthorized');
+    }
+
+  } catch (error) {
+    throw new Error('Unauthorized')
   }
 }
