@@ -3,16 +3,14 @@ import { getMovies } from '../dao/moviesDao';
 import Movie from '../types/Movie';
 import { combineResolvers } from 'graphql-resolvers'
 import { isAuthenticated } from '../controller/authController';
-import jwt from 'jsonwebtoken'
 
 const resolvers = {
   Query: {
     getUserLikedMovies: combineResolvers(isAuthenticated, (_: any, __: any, context: any) => {
       try {
-        const decodedToken = jwt.verify(context.token, process.env.JWT_SECRET as string) as { userId: string };
         const users = getUsers();
         const movies = getMovies();
-        const user = users.find((user) => user.id === decodedToken.userId);
+        const user = users.find((user) => user.id === context.userId);
         if (!user) {
           throw new Error('User not found');
         }

@@ -71,8 +71,7 @@ export const login = async (req: Request, res: Response) => {
 
 export const isAuthenticated = (_: any, __: any, context: any) => {
   try {
-    const decodedToken = jwt.verify(context.token, process.env.JWT_SECRET as string);
-    if (decodedToken) {
+    if (context.userId) {
       return skip;
     } else {
       throw new Error('Unauthorized');
