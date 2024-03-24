@@ -41,5 +41,5 @@ export const authenticateUser = async (username: string, password: string) => {
 
   const passwordMatch = await bcrypt.compare(password, user.password);
 
-  return passwordMatch;
+  return passwordMatch ? user.id : '';
 }
