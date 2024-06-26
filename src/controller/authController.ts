@@ -6,6 +6,7 @@ import User from '../types/User';
 import { addUser, validateExistingUsername, authenticateUser } from '../dao/authDao';
 import { v4 as uuidv4 } from 'uuid';
 import dotenv from 'dotenv';
+import { CONFIG } from '../helpers/config';
 
 dotenv.config();
 
@@ -32,7 +33,7 @@ export const register = async (req: Request, res: Response) => {
     addUser(newUser);
 
     // Generar un token JWT para el nuevo usuario
-    const token = jwt.sign({ userId: username }, process.env.JWT_SECRET as string);
+    const token = jwt.sign({ userId: username }, CONFIG.JWT);
 
     res.status(201).json({ token });
 
@@ -55,7 +56,7 @@ export const login = async (req: Request, res: Response) => {
 
     if (userId) {
 
-      const token = jwt.sign({ userId }, process.env.JWT_SECRET as string);
+      const token = jwt.sign({ userId }, CONFIG.JWT);
 
       // Send the token in the response
       res.status(200).json({ token });

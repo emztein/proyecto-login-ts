@@ -4,6 +4,7 @@ import authRoutes from './routes/authRoutes';
 import { typeDefs } from './graphql/schema';
 import resolvers from './graphql/resolvers';
 import jwt from 'jsonwebtoken'
+import { CONFIG } from './helpers/config';
 
 async function startApolloServer() {
   const server = new ApolloServer({
@@ -11,7 +12,7 @@ async function startApolloServer() {
     resolvers,
     context: ({ req }) => {
       const token = req.headers.authorization || '';
-      return jwt.verify(token, process.env.JWT_SECRET as string);
+      return jwt.verify(token, CONFIG.JWT ?? '');
     }
   });
 
