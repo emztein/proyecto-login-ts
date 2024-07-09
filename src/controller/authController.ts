@@ -19,7 +19,7 @@ export const register = async (req: Request, res: Response) => {
       return res.status(400).json({ error: 'Debes proporcionar nombre de usuario y contraseña' });
     }
 
-    validateExistingUsername(username) && res.status(500).json({ error: 'El usuario ya existe' })
+    await validateExistingUsername(username) && res.status(500).json({ error: 'El usuario ya existe' })
 
     const hashedPassword = await bcrypt.hash(password, 10)// 10 es el número de rondas de cifrado
     const newUser: User = {

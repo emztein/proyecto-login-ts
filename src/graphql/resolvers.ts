@@ -6,9 +6,9 @@ import { isAuthenticated } from '../controller/authController';
 
 const resolvers = {
   Query: {
-    getUserLikedMovies: combineResolvers(isAuthenticated, (_: any, __: any, context: any) => {
+    getUserLikedMovies: combineResolvers(isAuthenticated, async (_: any, __: any, context: any) => {
       try {
-        const users = getUsers();
+        const users = await getUsers();
         const movies = getMovies();
         const user = users.find((user) => user.id === context.userId);
         if (!user) {
