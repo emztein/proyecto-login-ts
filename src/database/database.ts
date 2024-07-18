@@ -1,7 +1,9 @@
 import { MongoClient, Db } from 'mongodb';
+import { CONFIG } from '../helpers/config';
 
-const uri = 'mongodb://localhost:27017';
-const dbName = 'app_database';
+const uri = CONFIG.URI;
+const dbName = CONFIG.dbName;
+
 
 let db: Db;
 
@@ -17,7 +19,6 @@ export const connectToDatabase = async () => {
     return db;
   } catch (error) {
     console.error('Error conectando a la base de datos:', error);
-    throw error;
   }
 };
 

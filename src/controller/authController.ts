@@ -66,7 +66,7 @@ export const login = async (req: Request, res: Response) => {
     }
 
   } catch (error) {
-    res.status(500).json({ error: 'Error en el servidor' });
+    res.status(500).json({ error: `Error en el servidor: ${error}` });
   }
 }
 

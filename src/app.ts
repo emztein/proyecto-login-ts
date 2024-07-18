@@ -17,30 +17,26 @@ async function startApolloServer() {
     }
   });
 
-  const port = process.env.PORT || 3002;
-
-  connectToDatabase()
-    .then(() => {
-      app.listen(port, () => {
-        console.log(`Servidor corriendo en http://localhost:${port}`);
-      });
-    })
-    .catch((error) => {
-      console.error('Error al conectar a la base de datos:', error);
-      process.exit(1);
+  const startDB = async () => {
+    await connectToDatabase()
+    const port = CONFIG.PORT;
+    app.listen(port, () => {
+      console.log(`Servidor de base de datos corriendo en http://localhost:${port}`);
     });
+  }
 
   await server.start();
   const app = express();
   app.use(express.json());
   app.use(authRoutes);
-
   server.applyMiddleware({ app, path: '/graphql' });
 
   app.listen(3001, () => {
     console.log('Express server running on port 3001...');
   });
   console.log('GraphQL server running at http://localhost:3001/graphql');
+
+  await startDB().catch(error => console.error(error))
 }
 
 startApolloServer().catch((error) => {
