@@ -3,14 +3,16 @@ import { getMovies } from '../dao/moviesDao';
 import Movie from '../types/Movie';
 import { combineResolvers } from 'graphql-resolvers'
 import { isAuthenticated } from '../controller/authController';
+import { GraphQLContext } from '../types/GraphQl';
 
 const resolvers = {
   Query: {
-    getUserLikedMovies: combineResolvers(isAuthenticated, (_: any, __: any, context: any) => {
+    getUserLikedMovies: combineResolvers(isAuthenticated, async (_: any, __: any, context: GraphQLContext) => {
+
       try {
-        const users = getUsers();
+        const users = await getUsers();
         const movies = getMovies();
-        const user = users.find((user) => user.id === context.userId);
+        const user = users.find((user) => user.id === context.userInfo.userId);
         if (!user) {
           throw new Error('User not found');
         }

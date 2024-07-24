@@ -13,5 +13,8 @@ if (error) {
 }
 
 export const CONFIG = {
-  JWT: envVars.JWT_SECRET
+  JWT: envVars.JWT_SECRET,
+  PORT: envVars.PORT,
+  URI: envVars.URI,
+  dbName: envVars.DBNAME
 }
