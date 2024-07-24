@@ -6,24 +6,22 @@ import { typeDefs } from './graphql/schema';
 import resolvers from './graphql/resolvers';
 import jwt from 'jsonwebtoken'
 import { CONFIG } from './helpers/config';
+import { Db } from 'mongodb';
+import { GraphQLContext, UserInfo } from './types/GraphQl';
 
-async function startApolloServer() {
+async function startApolloServer(db: Db | void | undefined) {
   const server = new ApolloServer({
     typeDefs,
     resolvers,
     context: ({ req }) => {
       const token = req.headers.authorization || '';
-      return jwt.verify(token, CONFIG.JWT ?? '');
+      const obj: GraphQLContext = {
+        db,
+        userInfo: jwt.verify(token, CONFIG.JWT ?? '') as UserInfo
+      }
+      return obj;
     }
   });
-
-  const startDB = async () => {
-    await connectToDatabase()
-    const port = CONFIG.PORT;
-    app.listen(port, () => {
-      console.log(`Servidor de base de datos corriendo en http://localhost:${port}`);
-    });
-  }
 
   await server.start();
   const app = express();
@@ -34,11 +32,12 @@ async function startApolloServer() {
   app.listen(3001, () => {
     console.log('Express server running on port 3001...');
   });
-  console.log('GraphQL server running at http://localhost:3001/graphql');
 
-  await startDB().catch(error => console.error(error))
 }
 
-startApolloServer().catch((error) => {
-  console.error('Error starting Apollo server:', error)
-});
+const main = async () => {
+  const db = await connectToDatabase().catch(e => console.error("error connecting to db"))
+  await startApolloServer(db)
+}
+
+main()
